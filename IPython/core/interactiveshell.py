@@ -137,10 +137,10 @@ class SpaceInInput(Exception): pass
 
 
 def get_default_colors():
-    "DEPRECATED"
-    warn('get_default_color is Deprecated, and is `Neutral` on all platforms.',
-            DeprecationWarning, stacklevel=2)
-    return 'Neutral'
+    if os.name == 'nt':
+        return 'Windows'
+    else:
+        return 'Neutral'
 
 
 class SeparateUnicode(Unicode):
@@ -249,8 +249,8 @@ class InteractiveShell(SingletonConfigurable):
         get confused with color codes, this capability can be turned off.
         """
     ).tag(config=True)
-    colors = CaselessStrEnum(('Neutral', 'NoColor','LightBG','Linux'),
-                             default_value='Neutral',
+    colors = CaselessStrEnum(('Neutral', 'NoColor', 'LightBG', 'Linux', 'Windows'),
+                             default_value=get_default_colors(),
         help="Set the color scheme (NoColor, Neutral, Linux, or LightBG)."
     ).tag(config=True)
     debug = Bool(False).tag(config=True)

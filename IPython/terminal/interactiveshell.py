@@ -55,6 +55,27 @@ _style_overrides_linux = {
             Token.OutPromptNum: '#bb0000 bold',
 }
 
+_style_overrides_neutral = {
+    Token.Number: '#007700',
+    Token.Operator: 'noinherit',
+    Token.String: '#BB6622',
+    Token.Name.Function: '#2080D0',
+    Token.Name.Class: 'bold #2080D0',
+    Token.Name.Namespace: 'bold #2080D0',
+    Token.Prompt: '#009900',
+    Token.PromptNum: '#00ff00 bold',
+    Token.OutPrompt: '#990000',
+    Token.OutPromptNum: '#ff0000 bold',
+}
+
+_style_overrides_windows = _style_overrides_neutral.copy()
+_style_overrides_windows.update({
+    Token.Prompt: '#ansidarkgreen',
+    Token.PromptNum: '#ansigreen bold',
+    Token.OutPrompt: '#ansidarkred',
+    Token.OutPromptNum: '#ansired bold',
+})
+
 
 
 def get_default_editor():
@@ -274,18 +295,14 @@ class TerminalInteractiveShell(InteractiveShell):
                 # and a light background, because we can't tell what the terminal
                 # looks like. These tweaks to the default theme help with that.
                 style_cls = get_style_by_name('default')
-                style_overrides.update({
-                    Token.Number: '#007700',
-                    Token.Operator: 'noinherit',
-                    Token.String: '#BB6622',
-                    Token.Name.Function: '#2080D0',
-                    Token.Name.Class: 'bold #2080D0',
-                    Token.Name.Namespace: 'bold #2080D0',
-                    Token.Prompt: '#009900',
-                    Token.PromptNum: '#00ff00 bold',
-                    Token.OutPrompt: '#990000',
-                    Token.OutPromptNum: '#ff0000 bold',
-                })
+                style_overrides = _style_overrides_neutral
+            elif legacy == 'windows':
+                # Sadly the default neutral theme is hard to use on Windows
+                # due to the limited color supported of the Windows console
+                # this alternative theme is easier to use on Windows and is
+                # the default there
+                style_cls = get_style_by_name('default')
+                style_overrides = _style_overrides_windows
             elif legacy =='nocolor':
                 style_cls=_NoStyle
                 style_overrides = {}

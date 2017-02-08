@@ -155,6 +155,7 @@ def exception_colors():
         Normal = C.Normal,
         ))
 
+    ex_colors.add_scheme(ex_colors['Linux'].copy('Windows'))
 
     return ex_colors
 
